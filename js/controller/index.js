@@ -241,8 +241,6 @@ function ThemNV() {
         // localStorage: nơi lưu trữ (chỉ chấp nhận json) - json là 1 kiểu dữ liệu
         // JSON.stringify: convert array to json
         var data = JSON.stringify(dsnv.nhanVien);
-        // console.log("data: ", data);
-
         // lưu data xuống localStorage
         localStorage.setItem("DSNV", data);
 
@@ -259,6 +257,12 @@ function ThemNV() {
 function xoaNV(maNVTuButton) {
     dsnv._xoaNhanVien(maNVTuButton);
     renderTable(dsnv.nhanVien);
+    // Xoá xong phải update dữ liệu lại cho local storage ko thì F5 xong nó lại hiện ra như chưa xoá
+    // localStorage: nơi lưu trữ (chỉ chấp nhận json) - json là 1 kiểu dữ liệu
+    // JSON.stringify: convert array to json
+    var data = JSON.stringify(dsnv.nhanVien);
+    // lưu data xuống localStorage
+    localStorage.setItem("DSNV", data);
 }
 
 
@@ -292,9 +296,15 @@ function capNhatNV() {
     else {
         // do nothing
     }
-    // ThemNV();
-    resetForm();
+    
     renderTable(dsnv.nhanVien);
+
+    // Sửa xong phải update dữ liệu lại cho local storage ko thì F5 xong nó lại hiện ra như chưa sửa
+    // localStorage: nơi lưu trữ (chỉ chấp nhận json) - json là 1 kiểu dữ liệu
+    // JSON.stringify: convert array to json
+    var data = JSON.stringify(dsnv.nhanVien);
+    // lưu data xuống localStorage
+    localStorage.setItem("DSNV", data);
 }
 
 
