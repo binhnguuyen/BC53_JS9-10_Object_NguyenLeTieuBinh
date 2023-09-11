@@ -292,6 +292,7 @@ function capNhatNV() {
     var valid = validationNV(nv);
     if ( valid ) {
         dsnv._capNhatNhanVien(nv);
+        resetForm();
     }
     else {
         // do nothing
