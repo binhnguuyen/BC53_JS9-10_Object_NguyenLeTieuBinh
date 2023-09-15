@@ -321,20 +321,20 @@ function timNV() {
 
     if (textSearch.length > 0) {
         result = dsnv.nhanVien.filter(function (nv) {
-            console.log('nv: ', nv);
+            // tìm kiếm trong danh sách nhân viên mà có xếp loại sau khi đã chuyển về từ thường mà có gồm từ khoá mà muốn tra
             return nv.xepLoai().toLowerCase().includes(textSearch);
         });
         renderTable(result);
-        // console.log('result: ', result);
+        console.log('result: ', result);
     } else {
         renderTable(dsnv.nhanVien);
     }
 
-    if ( textSearch.length == 0 ) {
+    if (textSearch.length == 0) {
         loaiNVErr.innerHTML = messReqToType;
         loaiNVErr.style.display = "block";
     }
-    else if ( textSearch.length > 0 && result == "" ) {
+    else if (textSearch.length > 0 && result == "") {
         loaiNVErr.innerHTML = messNotFound;
         loaiNVErr.style.display = "block";
     }
@@ -342,10 +342,10 @@ function timNV() {
         loaiNVErr.innerHTML = messFound;
         loaiNVErr.style.display = "block";
     }
-    
+
     // index = dsnv._timViTriNhanVienTheoLoai(loaiNV);
 
-    
+
     /*
     var htmlString = "";
 
