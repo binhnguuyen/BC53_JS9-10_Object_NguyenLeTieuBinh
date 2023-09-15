@@ -4,7 +4,7 @@ var dsnv = new DSNV();
 var dsnvTheoLoai = new DSNV();
 
 var dataJson = localStorage.getItem("DSNV");
-console.log('dataJson: ', dataJson);
+// console.log('dataJson: ', dataJson);
 if (dataJson !== null) {
     // chuyển string thành mảng
     dsnv.nhanVien = JSON.parse(dataJson);
@@ -176,7 +176,7 @@ function validationNV(value) {
 
     // kiểm tra mã tài khoản nv có bỏ trống, và có đúng số ký tự hay ko
     var valid = kiemTraRong(value.tkNV, accErr, messBlankTK) && kiemTraDoDai(value.tkNV, accErr, 4, 6, messLengthTK);
-    
+
     // kiểm tra tên value có bỏ trống, và có ký tự nào ngoài chữ hay ko
     valid &= kiemTraRong(value.tenNV, nameErr, messBlankName) && kiemTraChuoi(value.tenNV, nameErr, messCharName);
 
@@ -208,8 +208,8 @@ function validationNV(value) {
         kiemTraRong(value.gioLam, hourErr, messBlankHour) &&
         kiemTraSo(value.gioLam, hourErr, messCheckNnum) &&
         kiemTraLonNho(value.gioLam, hourErr, 80, 200, messMinMaxHour);
-    
-    if ( valid ) {
+
+    if (valid) {
         return valid;
     }
     else {
@@ -230,8 +230,8 @@ function ThemNV() {
 
     // Do kiểm tra trùng ko dùng trong phần cập nhật nên phải sử dụng riêng mình nó ở đây
     var accErr = document.querySelector("#tbTKNV");
-    var messDuplicateTK = "Mã nhân viên này đã tồn tại";    
-    var valid = validationNV(nv) && kiemTraTrung(nv.tkNV, dsnv.nhanVien, accErr, messDuplicateTK) ;
+    var messDuplicateTK = "Mã nhân viên này đã tồn tại";
+    var valid = validationNV(nv) && kiemTraTrung(nv.tkNV, dsnv.nhanVien, accErr, messDuplicateTK);
 
     if (valid) {
         // sau khi kiểm tra validation rồi thì dùng hàm _themNhanVien bên DSNV để push thuộc tính trong nv vào obj nhanVien
@@ -290,14 +290,14 @@ function suaNV(maSVTuButton) {
 function capNhatNV() {
     var nv = layThongTinTuForm();
     var valid = validationNV(nv);
-    if ( valid ) {
+    if (valid) {
         dsnv._capNhatNhanVien(nv);
         resetForm();
     }
     else {
         // do nothing
     }
-    
+
     renderTable(dsnv.nhanVien);
 
     // Sửa xong phải update dữ liệu lại cho local storage ko thì F5 xong nó lại hiện ra như chưa sửa
@@ -309,32 +309,44 @@ function capNhatNV() {
 }
 
 
-// Hàm cập nhật sinh viên
+// Hàm tìm kiếm sinh viên
 // trước khi cập nhật thì nó lại lấy thông tin đã đc sửa từ trên table xuống
 function timNV() {
     var loaiNVErr = getEle("#tbLoaiNV");
-    var loaiNV = getEle("#searchName").value;
+    var textSearch = getEle("#searchName").value.trim()?.toLowerCase();
     var messNotFound = "Không tìm thấy loại nhân viên này";
     var messFound = "Kết quả tìm kiếm được như sau";
-    var tableLoaiNVHead = getEle("#tableKetQuaTimKiemHead");
-    var tableLoaiNVBody = getEle("#tableKetQuaTimKiemBody");
-    var index = [];
+    var messReqToType = "Vui lòng nhập từ khoá";
+    var result = [];
 
-    index = dsnv._timViTriNhanVienTheoLoai(loaiNV);
+    if (textSearch.length > 0) {
+        result = dsnv.nhanVien.filter(function (nv) {
+            console.log('nv: ', nv);
+            return nv.xepLoai().toLowerCase().includes(textSearch);
+        });
+        renderTable(result);
+        // console.log('result: ', result);
+    } else {
+        renderTable(dsnv.nhanVien);
+    }
 
-    if ( index.length == 0 ) {
-        tableLoaiNVHead.classList.remove("d-block");
-        tableLoaiNVHead.classList.add("d-none");
+    if ( textSearch.length == 0 ) {
+        loaiNVErr.innerHTML = messReqToType;
+        loaiNVErr.style.display = "block";
+    }
+    else if ( textSearch.length > 0 && result == "" ) {
         loaiNVErr.innerHTML = messNotFound;
         loaiNVErr.style.display = "block";
     }
     else {
         loaiNVErr.innerHTML = messFound;
         loaiNVErr.style.display = "block";
-        tableLoaiNVHead.classList.remove("d-none");
-        tableLoaiNVHead.classList.add("d-block");
     }
+    
+    // index = dsnv._timViTriNhanVienTheoLoai(loaiNV);
 
+    
+    /*
     var htmlString = "";
 
     for (var i = 0; i < index.length; i++) {
@@ -354,8 +366,6 @@ function timNV() {
         </tr>`
         tableLoaiNVBody.innerHTML = htmlString;
     }
-    // bỏ dữ liệu vào table đc tạo sẵn bên HTML
-    
-    // renderTable(dsnvTheoLoai.nhanVien);
+    */
 }
 

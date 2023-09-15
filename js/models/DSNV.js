@@ -42,6 +42,7 @@ function DSNV() {
     };
 
     // Phương thức tìm vị trí nhân viên
+    /*
     this._timViTriNhanVienTheoLoai = function (loaiNV) {
 
         var index = [];
@@ -53,6 +54,7 @@ function DSNV() {
         }
         return index;
     };
+    */
 
     // Phương thức lấy thông tin nhân viên
     this._layThongTinNhanVien = function (tkNV) {
@@ -91,7 +93,7 @@ function DSNV() {
         }
     };
 
-    // Phương thức lấy thông tin nhân viên
+    // Phương thức tìm sinh viên
     this.timNhanVien = function (loaiNV) {
         var index = this._timViTriNhanVienTheoLoai(loaiNV);
         // nhanVien[index] : {tkNV:1, name: "",...}
